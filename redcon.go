@@ -303,18 +303,22 @@ func (s *TLSServer) ListenServeAndSignal(signal chan error) error {
 	return serve(s.Server)
 }
 
+func (s *Server) close() {
+	s.ln.Close()
+	s.closeConnections()
+}
+
+func (s *Server) closeConnections() {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	for c := range s.conns {
+		c.Close()
+	}
+	s.conns = nil
+}
+
 func serve(s *Server) error {
-	defer func() {
-		s.ln.Close()
-		func() {
-			s.mu.Lock()
-			defer s.mu.Unlock()
-			for c := range s.conns {
-				c.Close()
-			}
-			s.conns = nil
-		}()
-	}()
+	defer s.close()
 	for {
 		lnconn, err := s.ln.Accept()
 		if err != nil {
