@@ -11,7 +11,7 @@
 
 Redcon is a custom Redis server framework for Go that is fast and simple to use. The reason for this library it to give an efficient server front-end for the [BuntDB](https://github.com/tidwall/buntdb) and [Tile38](https://github.com/tidwall/tile38) projects.
 
-**Forked from https://github.com/yankeguo/redcon**
+**Forked from https://github.com/tidwall/redcon**
 
 Features
 --------
